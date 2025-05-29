@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <div class="d-flex align-items-start flex-column mb-3">
+        <h2>{{ jogo.evento }}</h2>
+        <span>{{ jogo.entrada_alias }}</span>
+    </div>
+    
+    <form action="/enviar-entrada" method="post">
+        <input hidden type="text" name="event_id" value="{{ jogo.id }}">
+        <input hidden type="text" name="fregues" value="{{ jogo.fregues }}">
+
+        <div class="input-group mb-3">
+            <input type="text" class="form-control" placeholder="URL BET" name="url_bet">
+        </div>
+
+        <div class="input-group mb-3">
+            <input required type="number" min="1.25" max="50" step="0.01" class="form-control" name="odd_mandante" placeholder="ODD Mandante">
+        </div>
+
+        <div class="input-group mb-3">
+            <input required type="number" min="1.25" max="50" step="0.01" class="form-control" name="odd_visitante" placeholder="ODD Visitante">
+        </div>
+
+        <div class="input-group">
+            Enviar no Telegram:
+        </div>
+
+        <div class="input-group form-check">
+            <input type="checkbox" class="form-check-input" name="teste"> 
+            <label class="form-check-label mx-2">Testes</label>
+        </div>
+
+        <div class="input-group form-check">
+            <input type="checkbox" class="form-check-input" name="free"> 
+            <label class="form-check-label mx-2">Free</label>
+        </div>
+
+        <div class="input-group form-check mb-3">
+            <input type="checkbox" class="form-check-input" name="premium"> 
+            <label class="form-check-label mx-2">Premium</label>
+        </div>
+<!-- 
+        <div class="form-floating mb-3">
+            <textarea required class="form-control" placeholder="" id="floatingTextarea2" style="height: 100px"></textarea>
+            <label for="floatingTextarea2">Mensagem Telegram: </label>
+        </div> -->
+
+        <div class="input-group ">
+            <button type="submit" class="btn btn-primary">Enviar</button>
+        </div>
+    </form>
+<!-- 
+    <script>
+        // alterar checkbox value
+        const checkboxes = document.querySelectorAll('[type="checkbox"]')
+
+        checkboxes.forEach( (checkbox) => {
+            checkbox.addEventListener("change", () => {
+                checkbox.value = checkbox.checked ? "true" : "~true";
+            });
+        });
+    </script> -->
+{% endblock %}

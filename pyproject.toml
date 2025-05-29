@@ -1,0 +1,33 @@
+[tool.poetry]
+name = "freguesia-web"
+version = "0.1.0"
+description = ""
+authors = ["Davies <daviesaraujo@hotmail.com>"]
+readme = "README.md"
+packages = [{include = "freguesia_web"}]
+
+[tool.poetry.dependencies]
+python = "^3.11"
+sqlalchemy = "^2.0.41"
+flask = "^3.1.1"
+bs4 = "^0.0.2"
+
+
+[tool.poetry.group.dev.dependencies]
+black = "^25.1.0"
+isort = "^6.0.1"
+pytest = "^8.3.5"
+pytest-cov = "^6.1.1"
+ipython = "8.15"
+python-dotenv = "^1.1.0"
+
+
+[tool.poetry.group.doc.dependencies]
+mkdocs-material = "^9.6.14"
+pyyaml = "6.0"
+mkdocstrings = "^0.29.1"
+mkdocstrings-python = "^1.16.10"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

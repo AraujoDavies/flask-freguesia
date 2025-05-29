@@ -1,0 +1,10 @@
+__pycache__/ 
+.env 
+htmlcov/ 
+.coverage 
+.pytest_cache/ 
+docs/
+mkdocs.yml
+tests/
+esboco_front/
+*.db

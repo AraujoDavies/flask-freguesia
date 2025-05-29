@@ -1,0 +1,121 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+
+
+
+    <div class="bloco-2">
+        <div class="section-observacao">
+        
+            <div class="cabecalho-bloco-2">
+                <h5 value="dasdsa">Jogos em observação...</h5>
+                <button>
+                    <svg id="observacao" data-url="{{ url_for('jogos_em_observacao' )}}" xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-arrow-clockwise" viewBox="0 0 16 16">
+                        <path fill-rule="evenodd" d="M8 3a5 5 0 1 0 4.546 2.914.5.5 0 0 1 .908-.417A6 6 0 1 1 8 2z"/>
+                        <path d="M8 4.466V.534a.25.25 0 0 1 .41-.192l2.36 1.966c.12.1.12.284 0 .384L8.41 4.658A.25.25 0 0 1 8 4.466"/>
+                    </svg> 
+                </button>
+            </div>
+
+            <div class="base-entradas-bloco-2">
+                <div  id="obs-loading" style="margin: 30px; width: 5rem; height: 5rem;" class="spinner-grow d-none" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
+
+                {% if not lista_jogos_em_observacao %}
+                    <div class="sem-dados"> Sem jogos. Recarregue no botão acima para buscar por novos jogos</div>
+                {% endif %}
+
+                {% for partida in lista_jogos_em_observacao %}
+                    <div class="listar-jogo">
+                        <a href="{{ partida.url }}" target="_blank">{{ partida.evento }}</a>
+
+                        <a href="{{ url_for('recomendar_entrada', id=partida.id) }}">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-arrow-right" viewBox="0 0 16 16">
+                                <path fill-rule="evenodd" d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8"></path>
+                            </svg>
+                        </a>
+                    </div>
+                {% endfor %}
+                
+
+                <!-- <div class="listar-jogo">
+                    <a href="#" target="_blank">JOGO...</a>
+                    <button>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-arrow-right" viewBox="0 0 16 16">
+                            <path fill-rule="evenodd" d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8"></path>
+                        </svg>
+                    </button>
+                </div> -->
+            </div>
+
+
+    </div>
+    
+    <div class="section-recomendadas">
+        
+        <div class="cabecalho-bloco-2">
+            <h5>Entrada recomendadas</h5>
+
+            <a href="{{ url_for('atualizar_entradas') }}" >
+                <svg id="recomendadas" xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-arrow-clockwise" viewBox="0 0 16 16">
+                    <path fill-rule="evenodd" d="M8 3a5 5 0 1 0 4.546 2.914.5.5 0 0 1 .908-.417A6 6 0 1 1 8 2z"/>
+                    <path d="M8 4.466V.534a.25.25 0 0 1 .41-.192l2.36 1.966c.12.1.12.284 0 .384L8.41 4.658A.25.25 0 0 1 8 4.466"/>
+                </svg> 
+            </button>
+        </div>
+        
+        <div class="base-entradas-bloco-2">
+
+            {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                <ul>
+                {% for category, message in messages %}
+                    
+                    {% if category == "success" %}
+                        <div class="alert alert-success" role="alert">
+                            {{ message }}
+                        </div>
+                    {% endif %}
+
+                    {% if category == "error" %}
+                        <div class="alert alert-danger" role="alert">
+                            {{ message }}
+                        </div>
+                    {% endif %}
+                {% endfor %}
+                </ul>
+            {% endif %}
+            {% endwith %}
+
+            <!-- <div class="listar-jogo">
+                <a href="#" target="_blank">JOGO...</a> <button>></button>
+            </div> -->
+
+                {% for partida in lista_jogos_recomendados %}
+                    <div class="listar-jogo d-flex align-items-center flex-column ">
+                        <a href="{{ partida.url }}" target="_blank">{{ partida.mandante }} v {{ partida.visitante }} <span id="placar"></span></a>
+                    </div>
+                {% endfor %}
+
+            <!-- <div style="margin: 30px; width: 5rem; height: 5rem;" class="spinner-grow" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div> -->
+        </div>
+
+    </div>
+</div>
+
+
+<script>
+  window.urls = {
+    rotaObservacao: "{{ url_for('jogos_em_observacao') }}",
+    rotaRecomendar: "{{ url_for('recomendar_entrada') }}",
+  };
+</script>
+<script src="{{ url_for('static', filename='script.js') }}"></script>
+
+{% endblock %}
+
+
