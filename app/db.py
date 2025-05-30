@@ -6,12 +6,6 @@ from sqlalchemy import Enum, String, create_engine
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import DeclarativeBase, Mapped, Session, mapped_column
 
-logging.basicConfig(
-    level=logging.INFO,
-    encoding="utf-8",
-    format="%(asctime)s - %(levelname)s: %(message)s",
-)
-
 
 engine = create_engine("sqlite:///freguesia.db", echo=False)
 
@@ -52,6 +46,13 @@ class PadraoFreguesia(Base):
 
 
 if __name__ == "__main__":
+   
+    logging.basicConfig(
+        level=logging.INFO,
+        encoding="utf-8",
+        format="%(asctime)s - %(levelname)s: %(message)s",
+    )
+
     logging.info("Rodando script de criação do banco...")
     Base.metadata.create_all(engine)
 
@@ -71,7 +72,6 @@ if __name__ == "__main__":
             logging.info("Banco criado com sucesso!")
         except IntegrityError:
             logging.warning("Banco não foi criado pois já existe")
-
 
     # with Session(engine) as session:
     #     session.

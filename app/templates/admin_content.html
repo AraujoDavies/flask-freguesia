@@ -1,60 +1,70 @@
 {% extends "base.html" %}
 
 {% block content %}
-
-
-
-
-    <div class="bloco-2">
-        <div class="section-observacao">
+<div class="bloco-2">
+    <div class="section-observacao">
         
-            <div class="cabecalho-bloco-2">
-                <h5 value="dasdsa">Jogos em observação...</h5>
-                <button>
-                    <svg id="observacao" data-url="{{ url_for('jogos_em_observacao' )}}" xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-arrow-clockwise" viewBox="0 0 16 16">
-                        <path fill-rule="evenodd" d="M8 3a5 5 0 1 0 4.546 2.914.5.5 0 0 1 .908-.417A6 6 0 1 1 8 2z"/>
-                        <path d="M8 4.466V.534a.25.25 0 0 1 .41-.192l2.36 1.966c.12.1.12.284 0 .384L8.41 4.658A.25.25 0 0 1 8 4.466"/>
-                    </svg> 
-                </button>
+        <div class="cabecalho-bloco-2">
+            <h5 value="dasdsa">Jogos em observação...</h5>
+            <button>
+                <svg id="observacao" data-url="{{ url_for('jogos_em_observacao' )}}" xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-arrow-clockwise" viewBox="0 0 16 16">
+                    <path fill-rule="evenodd" d="M8 3a5 5 0 1 0 4.546 2.914.5.5 0 0 1 .908-.417A6 6 0 1 1 8 2z"/>
+                    <path d="M8 4.466V.534a.25.25 0 0 1 .41-.192l2.36 1.966c.12.1.12.284 0 .384L8.41 4.658A.25.25 0 0 1 8 4.466"/>
+                </svg> 
+            </button>
+        </div>
+
+        <div class="base-entradas-bloco-2">
+            <div  id="obs-loading" style="margin: 30px; width: 5rem; height: 5rem;" class="spinner-grow d-none" role="status">
+                <span class="visually-hidden">Loading...</span>
             </div>
 
-            <div class="base-entradas-bloco-2">
-                <div  id="obs-loading" style="margin: 30px; width: 5rem; height: 5rem;" class="spinner-grow d-none" role="status">
-                    <span class="visually-hidden">Loading...</span>
-                </div>
+            {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                <ul>
+                {% for category, message in messages %}
+                    
+                    {% if category == "obs_success" %}
+                        <div class="alert alert-danger" role="alert">
+                            {{ message }}
+                        </div>
+                    {% endif %}
 
-                {% if not lista_jogos_em_observacao %}
-                    <div class="sem-dados"> Sem jogos. Recarregue no botão acima para buscar por novos jogos</div>
-                {% endif %}
-
-                {% for partida in lista_jogos_em_observacao %}
-                    <div class="listar-jogo">
-                        <a href="{{ partida.url }}" target="_blank">{{ partida.evento }}</a>
-
-                        <a href="{{ url_for('recomendar_entrada', id=partida.id) }}">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-arrow-right" viewBox="0 0 16 16">
-                                <path fill-rule="evenodd" d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8"></path>
-                            </svg>
-                        </a>
-                    </div>
                 {% endfor %}
-                
+                </ul>
+            {% endif %}
+            {% endwith %}
 
-                <!-- <div class="listar-jogo">
-                    <a href="#" target="_blank">JOGO...</a>
-                    <button>
+
+            {% if not lista_jogos_em_observacao %}
+                <div class="sem-dados"> Sem jogos. Clique no botão acima para buscar por novos jogos</div>
+            {% endif %}
+
+            {% for partida in lista_jogos_em_observacao %}
+                <div class="listar-jogo">
+                    <div>
+                        <a href="{{ url_for('remover_observacao', id=partida.id) }}">
+                            <button type="button" class="btn-close" aria-label="Close"></button>
+                        </a>
+
+                        <a href="{{ partida.url }}" target="_blank">{{ partida.evento }}</a>
+                    </div>
+                    
+
+                    <a href="{{ url_for('recomendar_entrada', id=partida.id) }}">
                         <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-arrow-right" viewBox="0 0 16 16">
                             <path fill-rule="evenodd" d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8"></path>
                         </svg>
-                    </button>
-                </div> -->
-            </div>
-
+                    </a>
+                </div>
+            {% endfor %}
+            
+        </div>
 
     </div>
-    
+
     <div class="section-recomendadas">
-        
+
         <div class="cabecalho-bloco-2">
             <h5>Entrada recomendadas</h5>
 
@@ -65,21 +75,20 @@
                 </svg> 
             </button>
         </div>
-        
-        <div class="base-entradas-bloco-2">
 
+        <div class="base-entradas-bloco-2">
             {% with messages = get_flashed_messages(with_categories=true) %}
             {% if messages %}
                 <ul>
                 {% for category, message in messages %}
                     
-                    {% if category == "success" %}
+                    {% if category == "rec_success" %}
                         <div class="alert alert-success" role="alert">
                             {{ message }}
                         </div>
                     {% endif %}
 
-                    {% if category == "error" %}
+                    {% if category == "rec_error" %}
                         <div class="alert alert-danger" role="alert">
                             {{ message }}
                         </div>
@@ -89,33 +98,113 @@
             {% endif %}
             {% endwith %}
 
-            <!-- <div class="listar-jogo">
-                <a href="#" target="_blank">JOGO...</a> <button>></button>
-            </div> -->
+            {% for partida in lista_jogos_recomendados %}
+                <div class="listar-jogo d-flex align-items-center flex-column ">
+                    <a href="{{ partida.url }}" target="_blank">{{ partida.mandante }} v {{ partida.visitante }} <span id="placar"></span></a>
+                </div>
+            {% endfor %}
 
-                {% for partida in lista_jogos_recomendados %}
-                    <div class="listar-jogo d-flex align-items-center flex-column ">
-                        <a href="{{ partida.url }}" target="_blank">{{ partida.mandante }} v {{ partida.visitante }} <span id="placar"></span></a>
-                    </div>
-                {% endfor %}
-
-            <!-- <div style="margin: 30px; width: 5rem; height: 5rem;" class="spinner-grow" role="status">
-                <span class="visually-hidden">Loading...</span>
-            </div> -->
         </div>
-
     </div>
+</div>
+
+<div class="bloco-3">
+    <div class="cabecalho-bloco-3-1">
+        <h2>Últimas entradas</h2>
+            
+        <!-- <div class="list-qt">
+            <button>list 10 \/</button>
+        </div> -->
+    </div>
+
+
+    <table class="table">
+        <thead>
+            <tr class="table-light">
+                <th>Data</th>
+                <th>Jogo</th>
+                <th>Placar</th>
+                <th>ODD</th>
+                <th>Resultado</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for entrada in ultimas_entradas %}
+
+                {% if entrada.resultado.name == "green" %}
+                    <tr class="table-success">
+                {% elif entrada.resultado.name == "red" %}
+                    <tr class="table-danger">
+                {% endif %}
+
+                    <td>{{ entrada.data_partida }}</td>
+                    <td>
+                        <a href="{{ entrada.url }}" target="_blank">
+                        {% if entrada.fregues.name == "visitante" %}
+                            <b>{{ entrada.mandante }}</b> x {{ entrada.visitante }}
+                        {% elif entrada.fregues.name == "mandante" %}
+                            {{ entrada.mandante }} x <b>{{ entrada.visitante }}</b>
+                        {% endif %}                           
+                        </a>     
+                    </td>
+                    <td>{{ entrada.placar }}</td>
+                    <td>
+                        {% if entrada.fregues.name == "visitante" %}
+                            {{ entrada.odd_mandante }}
+                        {% elif entrada.fregues.name == "visitante" %}
+                            {{ entrada.odd_visitante }}
+                        {% endif %}                           
+                    </td>
+                    <td>{{ entrada.resultado.name }}</td>
+                </tr>
+
+            {% endfor %}
+        </tbody>
+    </table>
+
+<!-- 
+
+    </table> -->
+
+<!--         
+
+
+            <tr class="table-success">
+                <td>24/05/2025</td>
+                <td>
+                    <a href="#" target="_blank">
+                        São Paulo x Mirassol
+                    </a>                           
+                </td>
+                <td>1-0</td>
+                <td>@1.80</td>
+                <td>green</td>
+            </tr>
+
+            <tr class="table-danger">
+                <td>24/05/2025</td>
+                <td>
+                    <a href="#" target="_blank">
+                        Ameliano x Cerro
+                    </a>
+                </td>
+                <td>1-0</td>
+                <td>@1.50</td>
+                <td>red</td>
+            </tr>
+        </tbody> -->
+
+    {% if not ultimas_entradas %}
+        <div class="sem-dados"> Não há jogos salvos!</div>
+    {% endif %}
 </div>
 
 
 <script>
-  window.urls = {
-    rotaObservacao: "{{ url_for('jogos_em_observacao') }}",
-    rotaRecomendar: "{{ url_for('recomendar_entrada') }}",
-  };
+    window.urls = {
+        rotaObservacao: "{{ url_for('jogos_em_observacao') }}",
+        rotaRecomendar: "{{ url_for('recomendar_entrada') }}",
+    };
 </script>
 <script src="{{ url_for('static', filename='script.js') }}"></script>
-
 {% endblock %}
-
-

@@ -7,4 +7,4 @@ docs/
 mkdocs.yml
 tests/
 esboco_front/
-*.db
+*.json
