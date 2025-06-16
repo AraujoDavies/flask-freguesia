@@ -1,0 +1,9 @@
+services:
+  freguesia-web:
+    build: .
+    container_name: api-freguesia-web
+    restart: always
+    volumes:
+      - "./:/freguesia-web/"
+    command: bash -c "python -m flask --app app/main run"
+    network_mode: host

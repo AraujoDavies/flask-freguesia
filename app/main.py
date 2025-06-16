@@ -170,7 +170,7 @@ def jogos_em_observacao():
         return "Aguarde! Processo em andamento..."
 
     try:
-        for i in range(-1, 2, 1):  # 1 = hoje | 0 = amanha | -1 = dps_de_amanha
+        for i in range(1, -2, -1):   # 1 = hoje | 0 = amanha | -1 = dps_de_amanha
             hoje = datetime.now() - timedelta(
                 days=i
             )  # é normal contar como o dia atual para gerar o timestamp

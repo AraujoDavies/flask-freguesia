@@ -64,7 +64,7 @@ push:
 
 .PHONY: requirements
 requirements:
-	poetry export -o requirements_workload.txt --without-hashes --with workload
+	poetry export -o requirements.txt --without-hashes --with workload
 
 .PHONY: start-db
 start-db:
