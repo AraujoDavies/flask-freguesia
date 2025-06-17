@@ -3,7 +3,8 @@ services:
     build: .
     container_name: api-freguesia-web
     restart: always
+    ports:
+      - 80:5000
     volumes:
       - "./:/freguesia-web/"
-    command: bash -c "python -m flask --app app/main run"
-    network_mode: host
+    command: bash -c "gunicorn -b 0.0.0.0:5000 app.main:app --timeout 300"
