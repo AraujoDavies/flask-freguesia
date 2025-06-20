@@ -3,8 +3,19 @@ services:
     build: .
     container_name: api-freguesia-web
     restart: always
-    ports:
-      - 80:5000
+    expose:
+      - "5000"  # Exponha a porta internamente para o Nginx
     volumes:
       - "./:/freguesia-web/"
     command: bash -c "gunicorn -b 0.0.0.0:5000 app.main:app --timeout 300"
+
+  nginx:
+    image: nginx:alpine
+    container_name: nginx-proxy
+    restart: always
+    ports:
+      - "80:80"
+    depends_on:
+      - freguesia-web
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
