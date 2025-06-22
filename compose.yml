@@ -7,7 +7,9 @@ services:
       - "5000"  # Exponha a porta internamente para o Nginx
     volumes:
       - "./:/freguesia-web/"
-    command: bash -c "gunicorn -b 0.0.0.0:5000 app.main:app --timeout 300"
+    command: bash -c "gunicorn -w 2 -b 0.0.0.0:5000 app.main:app --timeout 200"
+    mem_limit: 250m
+    cpus: 1
 
   nginx:
     image: nginx:alpine
@@ -19,3 +21,5 @@ services:
       - freguesia-web
     volumes:
       - ./nginx.conf:/etc/nginx/nginx.conf:ro
+    mem_limit: 250m
+    cpus: 1
