@@ -1,0 +1,13 @@
+[Unit]
+Description=Freguesia Web API
+After=network.target
+
+[Service]
+User=ubuntu
+WorkingDirectory=/home/ubuntu/flask-freguesia
+Environment="PATH=/home/ubuntu/flask-freguesia/venv/bin"
+ExecStart=/home/ubuntu/flask-freguesia/venv/bin/gunicorn app.main:app --workers 1 --bind 127.0.0.1:5000 --timeout 200
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
